@@ -1,0 +1,17 @@
+#root {
+    display: flex;
+}
+
+.container {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin: auto;
+}
+
+.container-title {
+    font-size: 18px;
+    text-align: center;
+    margin: 10px 0;
+}

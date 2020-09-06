@@ -8,9 +8,10 @@ const useChat = () => {
   useEffect(() =>{
     socketRef.current = socketIOClient("http://localhost:5000");
 
-    socketRef.current.on("newChatMessage",({message}) =>{
+    socketRef.current.on("newChatMessage",({user, message}) =>{
+      console.log(user, message);
       //append message to the end of array, after using spread operator
-      setMessages(messages => [...messages, message]);
+      setMessages(messages => [...messages, {user: user, message: message}]);
 
       //this will not work
       //useeffect runs once, when the component first loads
@@ -24,8 +25,8 @@ const useChat = () => {
   },[]);
 
   //message is part of an object
-  const sendMessage = ({message}) =>{
-    socketRef.current.emit("newChatMessage", {message})
+  const sendMessage = (messageObject) =>{
+    socketRef.current.emit("newChatMessage", messageObject)
   }
 
   return {messages, sendMessage};

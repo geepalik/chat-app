@@ -1,5 +1,5 @@
 import React from 'react';
 import {render} from "react-dom";
-import Chat from "/components/Chat/Chat"
+import App from "./App";
 
-render(<Chat />, document.querySelector('#app'));
+render(<App />, document.querySelector('#app'));
