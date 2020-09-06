@@ -8,8 +8,11 @@ const useChat = () => {
   useEffect(() =>{
     socketRef.current = socketIOClient("http://localhost:5000");
 
+    socketRef.current.on("mostRecentMessages", (mostRecentMessages) =>{
+      setMessages(messages => [...messages, ...mostRecentMessages]);
+    });
+
     socketRef.current.on("newChatMessage",({user, message}) =>{
-      console.log(user, message);
       //append message to the end of array, after using spread operator
       setMessages(messages => [...messages, {user: user, message: message}]);
 

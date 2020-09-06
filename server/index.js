@@ -8,6 +8,14 @@ const io = socketIO(PORT);
 io.on("connection", (socket) =>{
   console.log("Connection established");
 
+  socket.emit("mostRecentMessages", [
+    {user: "malakas", message: "re sy"},
+    {user: "allos malakas", message: "ti einai re sy?"},
+    {user: "allos malakas", message: "ti einai re sy?"},
+    {user: "allos malakas", message: "ti einai re sy?"},
+    {user: "allos malakas", message: "ti einai re sy?"},
+  ]);
+
   socket.on("newChatMessage",(data)=>{
     console.log(`Message received: ${util.inspect(data,{depth: null})}`);
     //send event to every single connected socket
