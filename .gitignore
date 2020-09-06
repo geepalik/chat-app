@@ -1,0 +1,9 @@
+# Dependency directories
+node_modules/
+.idea
+
+#build folder
+dist
+
+#cache folder
+.cache
