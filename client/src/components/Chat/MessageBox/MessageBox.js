@@ -21,7 +21,7 @@ const MessageBox = (props) => {
     <form className="chat-form" autoComplete="off">
       <TextField
         id="standard-basic"
-        label="Standard"
+        label="Write your message here"
         margin="normal"
         multiline
         fullWidth
