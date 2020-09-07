@@ -4,7 +4,7 @@ dotenv.config();
 
 export default function fileUploadMiddleware(req, res, next) {
   if(!req.file){
-    next();
+    res.status(204);
   }else{
     cloudinary.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -13,9 +13,7 @@ export default function fileUploadMiddleware(req, res, next) {
     });
 
     cloudinary.uploader.upload_stream((result) => {
-      //add url to req and continue to next middleware
-      req.image_url = result.secure_url;
-      next();
+      res.status(201).json({user_avatar_url: result.secure_url});
     }).end(req.file.buffer);
   }
 };

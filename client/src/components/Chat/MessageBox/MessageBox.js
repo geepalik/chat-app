@@ -3,12 +3,17 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 //renaming prop for use in the component
-const MessageBox = ({onSendMessage: pushSendMessage}) => {
+const MessageBox = (props) => {
   const [message, setMessage] = useState("");
   const messageRef = useRef("");
 
   const sendMessageClick = () =>{
-    pushSendMessage(messageRef.current.value);
+    const messageObject = {
+      user_name: props.userData.currentUserData.user_name,
+      user_avatar: props.userData.currentUserData.user_avatar,
+      message: messageRef.current.value
+    }
+    props.onSendMessage(messageObject);
     setMessage("");
   }
 
@@ -27,8 +32,7 @@ const MessageBox = ({onSendMessage: pushSendMessage}) => {
           if(event.key === "Enter"){
             //prevents enter from being pressed
             event.preventDefault();
-            pushSendMessage(message);
-            setMessage("");
+            sendMessageClick();
           }
         }}
         value={message}

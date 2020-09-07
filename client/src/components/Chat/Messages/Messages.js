@@ -8,13 +8,13 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from "@material-ui/core/Typography";
 
 
-const Messages = ({loggedUser,messages}) =>{
+const Messages = ({messages}) =>{
   return (
     <List>
       {messages.flatMap((messageObject, index) => [(
         <ListItem alignItems="flex-start" key={index}>
           <ListItemAvatar>
-            <Avatar alt="Avatar alt text" src="https://placekitten.com/200/200" />
+            <Avatar alt="Avatar alt text" src={messageObject.avatar} />
           </ListItemAvatar>
           <ListItemText
             primary={messageObject.user}

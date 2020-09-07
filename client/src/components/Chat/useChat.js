@@ -12,9 +12,9 @@ const useChat = () => {
       setMessages(messages => [...messages, ...mostRecentMessages]);
     });
 
-    socketRef.current.on("newChatMessage",({user, message}) =>{
+    socketRef.current.on("newChatMessage",({user, user_avatar, message}) =>{
       //append message to the end of array, after using spread operator
-      setMessages(messages => [...messages, {user: user, message: message}]);
+      setMessages(messages => [...messages, {user: user, avatar: user_avatar, message: message}]);
 
       //this will not work
       //useeffect runs once, when the component first loads

@@ -25,7 +25,13 @@ io.on("connection", (socket) =>{
 
   socket.on("newChatMessage",(data) => {
     //send event to every single connected socket
-    io.emit("newChatMessage",{user: data.currentUserName, message: data.message});
+    try{
+
+    }catch (e) {
+
+    }
+    console.log(data);
+    io.emit("newChatMessage",{user: data.user_name, user_avatar: data.user_avatar, message: data.message});
   });
   socket.on("disconnect",()=>{
     console.log("connection disconnected");
@@ -51,6 +57,6 @@ app.use(bodyParser.json());
 const storage = multer.memoryStorage();
 const upload = multer({storage});
 
-app.post('/api/upload',upload.single('avatar'), fileUploadMiddleware, userController.saveNewUser);
+app.post('/api/upload',upload.single('avatar'), fileUploadMiddleware);
 
 app.listen(process.env.HTTP_PORT,()=>console.log(`HTTP Server listening on ${process.env.HTTP_PORT}`))

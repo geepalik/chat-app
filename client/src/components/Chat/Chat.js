@@ -3,7 +3,7 @@ import MessageBox from "./MessageBox/MessageBox";
 import Messages from "./Messages/Messages";
 import useChat from "./useChat";
 
-const Chat = ({currentUserName}) => {
+const Chat = (currentUserData) => {
   //useChat calls to our custom hook
   //it returns an object with messages and sending a message
   const {messages, sendMessage} = useChat();
@@ -11,11 +11,11 @@ const Chat = ({currentUserName}) => {
     <div>
       <Messages
         messages={messages}
-        loggedUser={currentUserName}
       />
       <MessageBox
+        userData={currentUserData}
         onSendMessage={message => {
-          sendMessage({currentUserName, message});
+          sendMessage(message);
         }}
       />
     </div>

@@ -18,28 +18,29 @@ const LoginForm = ({setUserDataForChat}) => {
   }
 
   const setUserName = (userName, imageFile) =>{
-    setLoading(true);
-    const data = new FormData();
-    if(imageFile !== undefined){
+    if(imageFile === undefined){
+      setUserDataForChat({
+        user_name: userName,
+      });
+    }else{
+      setLoading(true);
+      const data = new FormData();
       data.append('avatar',imageFile);
-    }
-    data.append('username',userName);
+      try{
+        sendData(data)
+          .then(response => {
+            setUserDataForChat({
+              user_name: userName,
+              user_avatar: response.data.user_avatar_url
+            });
+          })
+          .catch( error => {
+            alert(error);
+          })
+          .finally(() => setLoading(false))
+      }catch (e) {
 
-    try{
-      sendData(data)
-        .then(response => {
-          setUserDataForChat({
-            user_id: response.data.user_id,
-            user_name: userName,
-            user_avatar: response.data.current_user_avatar
-          });
-      })
-        .catch( error => {
-          alert(error);
-      })
-        .finally(() => setLoading(false))
-    }catch (e) {
-
+      }
     }
   }
 
