@@ -7,3 +7,6 @@ dist
 
 #cache folder
 .cache
+
+#environmental variables
+.env

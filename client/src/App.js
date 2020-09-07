@@ -5,19 +5,21 @@ import LoginForm from "./components/Login/LoginForm/LoginForm";
 import "./App.css"
 
 const App = () =>{
-  const [userName, setUserName] = useState("");
+  const [userData, setUserData] = useState(null);
 
-  if(userName === ""){
+  if(userData === null){
     return (
       <div className="container">
         <div className="container-title">Welcome to our Chat App</div>
-        <LoginForm  onSend={setUserName} />
+        <LoginForm
+          setUserDataForChat={setUserData}
+        />
       </div>
     )
   }
   return (
     <Chat
-      currentUserName={userName}
+      currentUserData={userData}
     />
   );
 }

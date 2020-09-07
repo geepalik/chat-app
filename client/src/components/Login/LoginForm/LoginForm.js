@@ -1,21 +1,49 @@
-import React, {useRef} from "react";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import React, {useRef, useState} from "react";
+import {TextField, Fab, Button} from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
+import Loader from "react-loader-spinner";
+import axios from "axios";
 
-const LoginForm = ({onSend: setEnteredUserName}) => {
+const LoginForm = ({setUserDataForChat}) => {
+  const [loading, setLoading] = useState(false);
   const userNameInput = useRef("");
+  const imageInput = useRef("");
 
   const enterChatClick = () =>{
-    setUserName(userNameInput.current.value);
+    setUserName(userNameInput.current.value, imageInput.current.files[0]);
   }
 
-  const setUserName = (userName) =>{
-    //checks here
-    //for length
-    setEnteredUserName(userName);
+  const sendData = async (options) => {
+    return await axios.post('http://localhost:5002/api/upload',options);
   }
 
-  return (
+  const setUserName = (userName, imageFile) =>{
+    setLoading(true);
+    const data = new FormData();
+    if(imageFile !== undefined){
+      data.append('avatar',imageFile);
+    }
+    data.append('username',userName);
+
+    try{
+      sendData(data)
+        .then(response => {
+          setUserDataForChat({
+            user_id: response.data.user_id,
+            user_name: userName,
+            user_avatar: response.data.current_user_avatar
+          });
+      })
+        .catch( error => {
+          alert(error);
+      })
+        .finally(() => setLoading(false))
+    }catch (e) {
+
+    }
+  }
+
+  return loading ? (<Loader type="ThreeDots" color="#2BAD60" height={100} width={100} />) : (
     <form className="login-form" autoComplete="off">
       <TextField
         id="chat-username"
@@ -27,11 +55,31 @@ const LoginForm = ({onSend: setEnteredUserName}) => {
         onKeyDown={event => {
           if(event.key === "Enter"){
             event.preventDefault();
-            setUserName(event.target.value);
+            setUserName(event.target.value, imageInput.current.files[0]);
           }
         }}
-
       />
+      <label>
+        <input
+          style={{display:"none"}}
+          id="upload-avatar"
+          name="upload-avatar"
+          ref={imageInput}
+          type="file"
+          accept="image/x-png,image/gif,image/jpeg"
+        />
+        <Fab
+          color="secondary"
+          size="small"
+          component="span"
+          aria-label="add"
+          variant="extended"
+        >
+          <AddIcon /> Upload avatar
+        </Fab>
+        <br />
+        <br />
+      </label>
       <Button
         variant="contained"
         color="primary"
