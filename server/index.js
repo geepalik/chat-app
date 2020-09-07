@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime'
 import socketIO from 'socket.io';
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -6,8 +7,9 @@ import multer from 'multer';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import userController from './controllers/userController';
 import fileUploadMiddleware from './middleware/fileUploadMiddleware';
+import db from './models'
+const Message = db.messages;
 
 const io = socketIO(process.env.SOCKET_PORT);
 const app = express();
@@ -15,28 +17,48 @@ const app = express();
 io.on("connection", (socket) =>{
   console.log("Connection established");
 
-  socket.emit("mostRecentMessages", [
-    {user: "malakas", message: "re sy"},
-    {user: "allos malakas", message: "ti einai re sy?"},
-    {user: "allos malakas", message: "ti einai re sy?"},
-    {user: "allos malakas", message: "ti einai re sy?"},
-    {user: "allos malakas", message: "ti einai re sy?"},
-  ]);
+  getMostRecentMessages()
+    .then(results => {
+      console.log(results);
+      socket.emit("mostRecentMessages", results);
+    })
+    .catch(error => {
+      console.log(error);
+      socket.emit("mostRecentMessages", []);
+    });
 
   socket.on("newChatMessage",(data) => {
     //send event to every single connected socket
     try{
-
+      const message = {
+        user_name: data.user_name,
+        message_text: data.message,
+      }
+      Message.create(message).then(()=>{
+        io.emit("newChatMessage",{user: data.user_name, user_avatar: data.user_avatar, message: data.message});
+      }).catch(error => console.log("error: "+error))
     }catch (e) {
-
+      console.log("error: "+e);
     }
-    console.log(data);
-    io.emit("newChatMessage",{user: data.user_name, user_avatar: data.user_avatar, message: data.message});
   });
   socket.on("disconnect",()=>{
     console.log("connection disconnected");
   });
 });
+
+/**
+ * get 10 last messages
+ * @returns {Promise<Model[]>}
+ */
+async function getMostRecentMessages (){
+  return await Message.findAll({
+    raw: true,
+    attributes: [['user_name','user'],['message_text','message']],
+    order: [["created_at", "DESC"]],
+    limit: 10,
+    offset: 0
+  });
+}
 
 app.use((req, res, next) => {
   //allow access from every, elminate CORS
