@@ -1,14 +1,13 @@
-import 'regenerator-runtime/runtime'
-import socketIO from 'socket.io';
-import express from 'express';
-import bodyParser from 'body-parser';
-import multer from 'multer';
+const socketIO = require('socket.io');
+const express = require('express');
+const bodyParser = require('body-parser');
+const multer = require('multer');
 
-import dotenv from 'dotenv';
+const dotenv = require('dotenv');
 dotenv.config();
 
-import fileUploadMiddleware from './middleware/fileUploadMiddleware';
-import db from './models'
+const fileUploadMiddleware = require('./middleware/fileUploadMiddleware');
+const db = require('./models');
 const Message = db.messages;
 
 const io = socketIO(process.env.SOCKET_PORT);
@@ -20,7 +19,7 @@ io.on("connection", (socket) =>{
   getMostRecentMessages()
     .then(results => {
       console.log(results);
-      socket.emit("mostRecentMessages", results);
+      socket.emit("mostRecentMessages", results.reverse());
     })
     .catch(error => {
       console.log(error);
@@ -79,6 +78,6 @@ app.use(bodyParser.json());
 const storage = multer.memoryStorage();
 const upload = multer({storage});
 
-app.post('/api/upload',upload.single('avatar'), fileUploadMiddleware);
+app.post('/api/upload', upload.single('avatar'), fileUploadMiddleware.uploadImage);
 
 app.listen(process.env.HTTP_PORT,()=>console.log(`HTTP Server listening on ${process.env.HTTP_PORT}`))

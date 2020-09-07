@@ -18,6 +18,9 @@ const LoginForm = ({setUserDataForChat}) => {
   }
 
   const setUserName = (userName, imageFile) =>{
+    if(userName === ""){
+      return false;
+    }
     if(imageFile === undefined){
       setUserDataForChat({
         user_name: userName,

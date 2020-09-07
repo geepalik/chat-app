@@ -1,8 +1,8 @@
-import cloudinary from 'cloudinary'
-import dotenv from 'dotenv';
+const cloudinary = require('cloudinary');
+const dotenv = require('dotenv');
 dotenv.config();
 
-export default function fileUploadMiddleware(req, res, next) {
+exports.uploadImage = (req, res, next) => {
   if(!req.file){
     res.status(204);
   }else{

@@ -14,12 +14,10 @@
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/node": "^7.10.5",
-    "@babel/preset-env": "^7.11.5",
-    "babel-watch": "^7.0.0"
+    "nodemon": "^2.0.4"
   },
   "scripts": {
-    "watch": "babel-watch index.js"
+    "start": "node index.js",
+    "start-dev": "nodemon index.js"
   }
 }

@@ -1,7 +1,7 @@
-import dbConfig from '../config/db.config';
-import dotenv from 'dotenv';
+const dbConfig = require('../config/db.config');
+const dotenv = require('dotenv');
 dotenv.config();
-import Sequelize from "sequelize";
+const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(
   process.env.MYSQL_DATABASE, process.env.MYSQL_USER, process.env.MYSQL_PASSWORD, {
