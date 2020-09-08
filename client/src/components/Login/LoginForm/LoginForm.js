@@ -14,7 +14,7 @@ const LoginForm = ({setUserDataForChat}) => {
   }
 
   const sendData = async (options) => {
-    return await axios.post('http://localhost:5002/api/upload',options);
+    return await axios.post('http://18.157.186.183:5002/api/upload',options);
   }
 
   const setUserName = (userName, imageFile) =>{

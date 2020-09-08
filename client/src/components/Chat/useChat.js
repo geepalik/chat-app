@@ -6,7 +6,7 @@ const useChat = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() =>{
-    socketRef.current = socketIOClient("http://localhost:5001");
+    socketRef.current = socketIOClient("http://18.157.186.183:5001");
 
     socketRef.current.on("mostRecentMessages", (mostRecentMessages) =>{
       //on start, set as messages the mostRecentMessages
