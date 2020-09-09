@@ -31,6 +31,7 @@ io.on("connection", (socket) =>{
     try{
       const message = {
         user_name: data.user_name,
+        user_avatar: data.user_avatar,
         message_text: data.message,
       }
       Message.create(message).then(()=>{
@@ -52,7 +53,7 @@ io.on("connection", (socket) =>{
 async function getMostRecentMessages (){
   return await Message.findAll({
     raw: true,
-    attributes: [['user_name','user'],['message_text','message']],
+    attributes: [['user_name','user'],['user_avatar','avatar'],['message_text','message']],
     order: [["created_at", "DESC"]],
     limit: 10,
     offset: 0

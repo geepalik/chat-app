@@ -8,6 +8,9 @@ const MessageBox = (props) => {
   const messageRef = useRef("");
 
   const sendMessageClick = () =>{
+    if(messageRef.current.value === ""){
+      return false;
+    }
     const messageObject = {
       user_name: props.userData.currentUserData.user_name,
       user_avatar: props.userData.currentUserData.user_avatar,
