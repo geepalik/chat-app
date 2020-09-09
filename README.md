@@ -1,4 +1,4 @@
-# chat_app 
+# Real time chat app 
 Example of chat web application using Socket.IO
 Client in React, Server in Node.js/Express
 On login user can set an avatar for the chat
