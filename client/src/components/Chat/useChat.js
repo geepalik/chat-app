@@ -5,6 +5,7 @@ const useChat = () => {
   const socketRef = useRef();
   const [messages, setMessages] = useState([]);
 
+  //when component mounts and changes
   useEffect(() =>{
     socketRef.current = socketIOClient("http://localhost:5001");
 
@@ -22,7 +23,15 @@ const useChat = () => {
 
       //this will not work
       //useeffect runs once, when the component first loads
-      //acts as closuer that has access to messages
+      //acts as closure that has access to messages (parent scope)
+      //when it first runs, messages is empty array
+      //when you add new messages to the messages array, it is no longer empty
+      //and the array is changed (not mutated, new array)
+      //with this way you're no longer able to access the current value of messages here
+      //you would have access only to the first value of messages (empty array)
+      //and means you won't be able to append more messages
+      //so instead we use the above, that's we use a callback that will get the latest value of messages
+      //and then appends the latest data
       //setMessages([...messages, message])
     })
 
