@@ -1,12 +1,13 @@
-const socketIO = require('socket.io');
-const express = require('express');
-const bodyParser = require('body-parser');
-const multer = require('multer');
+import socketIO from "socket.io";
+import express from "express";
+import bodyParser from "body-parser";
+import multer from "multer";
 
-const dotenv = require('dotenv');
+import dotenv from "dotenv";
 dotenv.config();
 
-const fileUploadMiddleware = require('./middleware/fileUploadMiddleware');
+import fileUploadMiddleware from "./middleware/fileUploadMiddleware";
+import 'regenerator-runtime/runtime';
 const db = require('./models');
 const Message = db.messages;
 
