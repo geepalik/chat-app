@@ -6,10 +6,11 @@ import multer from "multer";
 import dotenv from "dotenv";
 dotenv.config();
 
+import {mongoConnect} from './config/mongo';
 import fileUploadMiddleware from "./middleware/fileUploadMiddleware";
 import 'regenerator-runtime/runtime';
-const db = require('./models');
-const Message = db.messages;
+//const db = require('./models');
+//const Message = db.messages;
 
 const io = socketIO(process.env.SOCKET_PORT);
 const app = express();
@@ -17,6 +18,7 @@ const app = express();
 io.on("connection", (socket) =>{
   console.log("Connection established");
 
+  /*
   getMostRecentMessages()
     .then(results => {
       console.log(results);
@@ -26,9 +28,12 @@ io.on("connection", (socket) =>{
       console.log(error);
       socket.emit("mostRecentMessages", []);
     });
+  */
 
   socket.on("newChatMessage",(data) => {
     //send event to every single connected socket
+    io.emit("newChatMessage",{user: data.user_name, user_avatar: data.user_avatar, message: data.message});
+    /*
     try{
       const message = {
         user_name: data.user_name,
@@ -41,6 +46,7 @@ io.on("connection", (socket) =>{
     }catch (e) {
       console.log("error: "+e);
     }
+    */
   });
   socket.on("disconnect",()=>{
     console.log("connection disconnected");
@@ -82,4 +88,14 @@ const upload = multer({storage});
 
 app.post('/api/upload', upload.single('avatar'), fileUploadMiddleware.uploadImage);
 
-app.listen(process.env.HTTP_PORT,()=>console.log(`HTTP Server listening on ${process.env.HTTP_PORT}`))
+const initApp = async () =>{
+  try{
+    await mongoConnect();
+    console.log("DB connection established");
+    app.listen(process.env.HTTP_PORT,()=>console.log(`HTTP Server listening on ${process.env.HTTP_PORT}`));
+  }catch (e) {
+    throw e;
+  }
+}
+
+initApp().then().catch(err => console.log(`Error on startup! ${err}`));
