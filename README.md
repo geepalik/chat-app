@@ -22,10 +22,7 @@ Have a .env file in the server folder with the following data
     NODE_ENV=development
     SOCKET_PORT=5001
     HTTP_PORT=5002
-    MYSQL_HOST='localhost'
-    MYSQL_USER='<mysql_user>'
-    MYSQL_PASSWORD='<mysql_password>'
-    MYSQL_DATABASE='<your database that holds tables messages>'
+    MONGODB_URL='<mongo db url>'
     CLOUDINARY_CLOUD_NAME='<cloudinary cloud name>'
     CLOUDINARY_API_KEY='<cloudinary api key>'
     CLOUDINARY_API_SECRET='<cloudinary secret key>'

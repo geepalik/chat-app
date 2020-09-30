@@ -1,5 +1,4 @@
 import monggose from 'mongoose';
-import {getClient} from "../config/mongo";
 
 const Schema = monggose.Schema;
 
@@ -22,3 +21,5 @@ const messageSchema = new Schema({
   //to use with createdAt and updatedAt
   timestamps: true
 })
+
+exports.Message = monggose.model('Message',messageSchema);

@@ -7,10 +7,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import {mongoConnect} from './config/mongo';
+import {Message} from './models/message';
 import fileUploadMiddleware from "./middleware/fileUploadMiddleware";
 import 'regenerator-runtime/runtime';
-//const db = require('./models');
-//const Message = db.messages;
 
 const io = socketIO(process.env.SOCKET_PORT);
 const app = express();
@@ -18,35 +17,32 @@ const app = express();
 io.on("connection", (socket) =>{
   console.log("Connection established");
 
-  /*
+
   getMostRecentMessages()
     .then(results => {
-      console.log(results);
       socket.emit("mostRecentMessages", results.reverse());
     })
     .catch(error => {
-      console.log(error);
       socket.emit("mostRecentMessages", []);
     });
-  */
+
 
   socket.on("newChatMessage",(data) => {
     //send event to every single connected socket
-    io.emit("newChatMessage",{user: data.user_name, user_avatar: data.user_avatar, message: data.message});
-    /*
     try{
-      const message = {
-        user_name: data.user_name,
-        user_avatar: data.user_avatar,
-        message_text: data.message,
-      }
-      Message.create(message).then(()=>{
-        io.emit("newChatMessage",{user: data.user_name, user_avatar: data.user_avatar, message: data.message});
+      const message = new Message(
+        {
+          user_name: data.user_name,
+          user_avatar: data.user_avatar,
+          message_text: data.message,
+        }
+      )
+      message.save().then(()=>{
+        io.emit("newChatMessage",{user_name: data.user_name, user_avatar: data.user_avatar, message_text: data.message});
       }).catch(error => console.log("error: "+error))
     }catch (e) {
       console.log("error: "+e);
     }
-    */
   });
   socket.on("disconnect",()=>{
     console.log("connection disconnected");
@@ -58,13 +54,10 @@ io.on("connection", (socket) =>{
  * @returns {Promise<Model[]>}
  */
 async function getMostRecentMessages (){
-  return await Message.findAll({
-    raw: true,
-    attributes: [['user_name','user'],['user_avatar','avatar'],['message_text','message']],
-    order: [["created_at", "DESC"]],
-    limit: 10,
-    offset: 0
-  });
+  return await Message
+    .find()
+    .sort({_id:-1})
+    .limit(10);
 }
 
 app.use((req, res, next) => {

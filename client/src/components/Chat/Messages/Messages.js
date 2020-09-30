@@ -14,10 +14,10 @@ const Messages = ({messages}) =>{
       {messages.flatMap((messageObject, index) => [(
         <ListItem alignItems="flex-start" key={index}>
           <ListItemAvatar>
-            <Avatar alt="Avatar alt text" src={messageObject.avatar} />
+            <Avatar alt="Avatar alt text" src={messageObject.user_avatar} />
           </ListItemAvatar>
           <ListItemText
-            primary={messageObject.user}
+            primary={messageObject.user_name}
             secondary={
               <Fragment>
                 <Typography
@@ -25,7 +25,7 @@ const Messages = ({messages}) =>{
                   variant="body2"
                   color="textPrimary"
                 >
-                  {messageObject.message}
+                  {messageObject.message_text}
                 </Typography>
               </Fragment>
             }
