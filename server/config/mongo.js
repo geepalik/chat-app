@@ -13,6 +13,10 @@ const mongoConnect = async () =>{
   _db = await mongoose.connect(process.env.MONGODB_URL,{ useNewUrlParser: true, useUnifiedTopology: true });
 }
 
+/**
+ *
+ * @returns {Promise<void>}
+ */
 const getClient = () => {
   if(!_db){
     _db = mongoConnect();
