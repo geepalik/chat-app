@@ -2,7 +2,7 @@ import cloudinary from "cloudinary";
 import dotenv from "dotenv";
 dotenv.config();
 
-exports.uploadImage = (req, res, next) => {
+const uploadImage = (req, res) => {
   if(!req.file){
     res.status(204);
   }else{
@@ -17,3 +17,5 @@ exports.uploadImage = (req, res, next) => {
     }).end(req.file.buffer);
   }
 };
+
+export default uploadImage;

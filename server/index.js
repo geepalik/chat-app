@@ -8,7 +8,7 @@ dotenv.config();
 
 import {mongoConnect} from './config/mongo';
 import {Message} from './models/message';
-import fileUploadMiddleware from "./middleware/fileUploadMiddleware";
+import fileUploader from "./util/fileUploader";
 import 'regenerator-runtime/runtime';
 
 const io = socketIO(process.env.SOCKET_PORT);
@@ -79,7 +79,7 @@ app.use(bodyParser.json());
 const storage = multer.memoryStorage();
 const upload = multer({storage});
 
-app.post('/api/upload', upload.single('avatar'), fileUploadMiddleware.uploadImage);
+app.post('/api/upload', upload.single('avatar'), fileUploader);
 
 const initApp = async () =>{
   try{
@@ -91,4 +91,4 @@ const initApp = async () =>{
   }
 }
 
-initApp().then().catch(err => console.log(`Error on startup! ${err}`));
+initApp().catch(err => console.log(`Error on startup! ${err}`));
