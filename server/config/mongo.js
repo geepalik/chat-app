@@ -1,29 +1,15 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
-import 'regenerator-runtime/runtime';
-
-let _db;
 
 /**
- * connection pooling
+ * init database connection
+ * to be called once when starting app
+ * and use connection for all transactions
  * @returns {Promise<void>}
  */
 const mongoConnect = async () =>{
-  _db = await mongoose.connect(process.env.MONGODB_URL,{ useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect(process.env.MONGODB_URL,{ useNewUrlParser: true, useUnifiedTopology: true });
 }
 
-/**
- *
- * @returns {Promise<void>}
- */
-const getClient = () => {
-  if(!_db){
-    _db = mongoConnect();
-  }
-  return _db;
-};
-
-exports.mongoConnect = mongoConnect;
-exports.getClient = getClient;
-
+export default mongoConnect;
