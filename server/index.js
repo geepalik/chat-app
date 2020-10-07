@@ -8,7 +8,7 @@ dotenv.config();
 
 import {mongoConnect} from './config/mongo';
 import {Message} from './models/message';
-import fileUploader from "./util/fileUploader";
+import fileUploader from "./controllers/fileUploader";
 import 'regenerator-runtime/runtime';
 
 const io = socketIO(process.env.SOCKET_PORT);
