@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import mongoConnect from './config/mongo';
-import {Message} from './models/message';
+import Message from './models/message';
 import fileUploader from "./controllers/fileUploader";
 
 const io = socketIO(process.env.SOCKET_PORT);
