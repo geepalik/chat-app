@@ -12,7 +12,10 @@ const uploadImage = (req, res) => {
       api_secret: process.env.CLOUDINARY_API_SECRET,
     });
 
-    cloudinary.uploader.upload_stream((result) => {
+    cloudinary.uploader.upload_stream((err,result) => {
+      if(err){
+        res.status(500).json({status:err});
+      }
       res.status(201).json({user_avatar_url: result.secure_url});
     }).end(req.file.buffer);
   }
