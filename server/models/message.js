@@ -18,8 +18,12 @@ const messageSchema = new Schema({
 },{
   //when a new version of row is added to database
   //automatically add timestamp to that row
-  //to use with createdAt and updatedAt
-  timestamps: true
+  //we save created time, but don't need for the scope of this project
+  //an update time
+  timestamps: {
+    createdAt: true,
+    updatedAt: false
+  }
 })
 
 exports.Message = mongoose.model('Message',messageSchema);
